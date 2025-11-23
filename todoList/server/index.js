@@ -17,11 +17,41 @@ app.get('/get', (req, res)=>{
     })
 })
 
+app.put('/edit/:id', async (req, res)=>{
+    try {
+        const id = req.params.id;
+        const currentTodo = await TodoModel.findById(id);
+        if (!currentTodo) {
+            return res.status(404).json({ error: "Todo not found" });
+        }
+        const updatedTodo = await TodoModel.findByIdAndUpdate(
+            id, 
+            { done: !currentTodo.done },
+            { new: true }
+        );
+        res.json(updatedTodo);
+      } catch (err) {
+        console.log("Update error:", err);
+        res.status(500).json({ error: "Failed to update todo", err });
+    }
+})
+
 app.post('/add', (req, res)=>{
     const task = req.body.task;
     TodoModel.create({task: task})
     .then((newTodo)=>{
         res.json(newTodo);
+    })
+    .catch((err)=>{
+        res.status(500).json({error: "Failed to add todo"});
+    })
+})
+
+app.delete('/delete/:id', (req, res)=>{
+  const id = req.params.id;
+  TodoModel.findByIdAndDelete({_id: id})
+  .then((result)=>{
+        res.json(result);
     })
     .catch((err)=>{
         res.status(500).json({error: "Failed to add todo"});
