@@ -27,6 +27,14 @@ function Home() {
         if (loading) {
                 return <Loading />;
         }
+
+        const handleEdit = (id) => {
+                axios.put(`http://localhost:3001/edit/${id}`)
+                .then((result) => {
+                        console.log(result)
+                })
+                .catch(err => console.log(err))
+        }
         return (
         <div className='todo'>
                 <h2>Todo List</h2>
@@ -37,7 +45,7 @@ function Home() {
                         <h2>No todo records</h2>
                                 :
                         todos.map(todo =>( 
-                                <div className='todoLists' key={todo._id}>
+                                <div className='todoLists' key={todo._id} onClick={handleEdit}>
                                         {todo.task}
                                 </div>
                         ))
