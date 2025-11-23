@@ -1,0 +1,251 @@
+/* index.css */
+
+/* --- Theme variables --- */
+:root{
+  --bg: #f6f7f9;
+  --card: #ffffff;
+  --muted: #6b7280;
+  --accent: #6d4c5d; /* dusky mauve */
+  --accent-2: #c9a88e; /* cashmere clay */
+  --text: #232629;
+  --success: #16a34a;
+  --danger: #ef4444;
+  --glass: rgba(255,255,255,0.6);
+  --shadow: 0 6px 18px rgba(30,30,40,0.08);
+  --radius: 12px;
+  --gap: 14px;
+  --max-width: 760px;
+}
+
+/* --- Global reset --- */
+*{box-sizing:border-box}
+html,body,#root{height:100%}
+body{
+  margin:0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial;
+  background: linear-gradient(180deg, #fbfbfc 0%, var(--bg) 100%);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  padding:32px 20px;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+}
+
+/* --- Main todo container --- */
+.todo{
+  width:100%;
+  max-width:var(--max-width);
+  background: linear-gradient(180deg, rgba(255,255,255,0.9), var(--card));
+  border-radius:18px;
+  padding:28px;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(34,36,38,0.04);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+
+/* subtle hover lift on large screens */
+@media (hover:hover) and (min-width:700px){
+  .todo:hover{ transform: translateY(-4px); box-shadow: 0 14px 40px rgba(30,30,40,0.12) }
+}
+
+.todo h2{
+  margin:0 0 14px 0;
+  font-size:20px;
+  letter-spacing:0.2px;
+  color:var(--text);
+}
+
+/* --- create area (input + add button) --- */
+.input, .todo button[type="submit"]{
+  font-size:15px;
+  padding:12px 14px;
+  border-radius:12px;
+  border:1px solid rgba(34,36,38,0.06);
+  outline:none;
+}
+
+.create-row{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  margin-bottom:18px;
+}
+
+/* If user's markup doesn't have a wrapper, target directly */
+.todo > div:first-of-type {
+  display:flex;
+  gap:10px;
+  margin-bottom:18px;
+  align-items:center;
+}
+
+/* input */
+.input{
+  flex:1;
+  background:linear-gradient(180deg, rgba(250,250,251,1), rgba(245,245,246,1));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+  transition: box-shadow .12s ease, transform .12s ease;
+}
+
+.input:focus{
+  box-shadow: 0 6px 18px rgba(109,76,93,0.08);
+  transform: translateY(-1px);
+}
+
+/* button */
+button[type="submit"]{
+  background: linear-gradient(180deg, var(--accent), #5b3847);
+  color:white;
+  border: none;
+  padding: 12px 16px;
+  min-width:92px;
+  cursor:pointer;
+  box-shadow: 0 8px 18px rgba(109,76,93,0.12);
+  transition: transform .12s ease, opacity .12s ease;
+  font-weight:600;
+}
+
+button[type="submit"]:active{ transform: translateY(1px) }
+button[type="submit"]:hover{ opacity:.98 }
+
+/* --- empty state --- */
+.todo h2 + h2 {
+  margin-top:8px;
+  font-weight:500;
+  color:var(--muted);
+  text-align:center;
+}
+
+/* --- todo list container --- */
+.todoLists {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px 14px;
+  margin-bottom:10px;
+  border-radius:12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(250,250,251,0.9));
+  border: 1px solid rgba(34,36,38,0.04);
+  box-shadow: 0 6px 12px rgba(20,20,30,0.02);
+  position:relative;
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+  cursor:default;
+}
+
+/* left "select" icon using pseudo element */
+.todoLists::before{
+  content: "✔";
+  font-size:14px;
+  display:inline-grid;
+  place-items:center;
+  width:36px;
+  height:36px;
+  border-radius:10px;
+  border:2px solid rgba(34,36,38,0.06);
+  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(250,250,250,0.8));
+  color: var(--muted);
+  margin-right:4px;
+  flex-shrink:0;
+  transition: background .12s ease, color .12s ease, transform .12s ease;
+  user-select:none;
+  -webkit-user-select: none;
+}
+
+/* right "delete" icon */
+.todoLists::after{
+  content: "🗑️";
+  position:absolute;
+  right:12px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:18px;
+  width:34px;
+  height:34px;
+  display:inline-grid;
+  place-items:center;
+  cursor:pointer;
+  border-radius:8px;
+  transition: transform .12s ease, background .12s ease, opacity .12s ease;
+  opacity:0.98;
+}
+
+/* hover states for pseudo-icons (desktop) */
+@media (hover:hover){
+  .todoLists:hover{ transform: translateY(-3px); box-shadow: 0 18px 40px rgba(15,15,20,0.04) }
+  .todoLists:hover::before{ transform: translateX(-4px) }
+  .todoLists:hover::after{ transform: translateY(-50%) scale(1.05); background: rgba(0,0,0,0.03) }
+}
+
+/* clickable feel for icons - left becomes colored on .selected */
+.todoLists.selected{
+  background: linear-gradient(180deg, rgba(244,249,246,1), rgba(237,253,244,1));
+  border-color: rgba(20,160,80,0.08);
+}
+
+.todoLists.selected::before{
+  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(235,250,238,0.9));
+  color: var(--success);
+  border-color: rgba(22,163,74,0.12);
+  box-shadow: 0 6px 14px rgba(22,163,74,0.06);
+}
+
+/* When user can't toggle class via JSX yet, allow a "checked" look using attribute selectors
+   (helpful if input generates a checked attribute or title text) */
+.todoLists[aria-checked="true"]::before{
+  color: var(--success);
+  border-color: rgba(22,163,74,0.12);
+}
+
+/* individual todo text styling */
+.todoLists > span, .todoLists > div, .todoLists > p{
+  margin:0;
+  padding-right:46px; /* leave room for delete icon */
+  flex:1;
+  white-space:break-spaces;
+  word-break:break-word;
+  color:var(--text);
+  font-size:15px;
+}
+
+/* strike-through when .selected */
+.todoLists.selected > span,
+.todoLists.selected > p,
+.todoLists.selected > div{
+  color: rgba(34,36,38,0.45);
+  text-decoration: line-through;
+}
+
+/* small meta / helper */
+.note{
+  font-size:13px;
+  color:var(--muted);
+  margin-top:10px;
+  text-align:center;
+}
+
+/* responsive adjustments */
+@media (max-width:520px){
+  body{ padding:20px 12px }
+  .todo{ padding:18px }
+  .input, button[type="submit"]{ padding:10px 12px; font-size:14px; border-radius:10px }
+  .todoLists{ padding:10px; border-radius:10px }
+  .todoLists::before{ width:32px; height:32px; font-size:13px; border-radius:8px }
+  .todoLists::after{ right:10px; font-size:16px; width:32px; height:32px }
+}
+
+/* Accessibility: focus outlines for keyboard users */
+button[type="submit"]:focus,
+.input:focus,
+.todoLists:focus{
+  outline: 3px solid rgba(109,76,93,0.12);
+  outline-offset: 3px;
+  border-radius:12px;
+}
+
+/* Small utility helpers (if you want a compact list) */
+.todoLists.compact{ padding:8px; gap:8px }
